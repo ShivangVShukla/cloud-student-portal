@@ -1,0 +1,640 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A modern student portal for learning resources, programming tutorials and cloud computing.">
+    <title>CloudSpace — Student Learning Hub</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #080d1b;
+            --surface: #111a2e;
+            --border: rgba(255, 255, 255, 0.09);
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --blue: #60a5fa;
+            --purple: #a78bfa;
+        }
+
+        body {
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            background:
+                radial-gradient(ellipse at 15% 0%, #182b55 0%, transparent 38%),
+                radial-gradient(ellipse at 90% 20%, #291b4c 0%, transparent 32%),
+                var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button, input {
+            font: inherit;
+        }
+
+        .container {
+            width: min(1120px, 90%);
+            margin: auto;
+        }
+
+        nav {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            font-size: 21px;
+            box-shadow: 0 5px 25px #6366f140;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .nav-right a:hover {
+            color: white;
+        }
+
+        .status {
+            padding: 7px 12px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            color: #86efac;
+            font-size: 12px;
+        }
+
+        .hero {
+            padding: 76px 0 44px;
+            max-width: 760px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 13px;
+            border-radius: 30px;
+            border: 1px solid #60a5fa35;
+            background: #3b82f615;
+            color: #93c5fd;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            margin-top: 23px;
+            font-size: clamp(38px, 6vw, 65px);
+            line-height: 1.1;
+            letter-spacing: -2.8px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #60a5fa, #c4b5fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            margin-top: 20px;
+            max-width: 600px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.9;
+        }
+
+        .search-wrap {
+            margin-top: 28px;
+            max-width: 560px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 7px 8px 7px 17px;
+            background: #ffffff08;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .search-wrap span {
+            color: var(--muted);
+            font-size: 20px;
+        }
+
+        .search-wrap input {
+            min-width: 0;
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 9px 0;
+        }
+
+        .search-wrap input::placeholder {
+            color: #718096;
+        }
+
+        .search-wrap:focus-within {
+            border-color: #60a5fa99;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 15px;
+            margin: 28px 0 20px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+            letter-spacing: -0.7px;
+        }
+
+        .section-heading p {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 24px;
+        }
+
+        .filter {
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: #ffffff05;
+            color: var(--muted);
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .filter:hover,
+        .filter.active {
+            background: #3b82f625;
+            color: #bfdbfe;
+            border-color: #60a5fa70;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 23px;
+            min-height: 260px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: linear-gradient(145deg, #ffffff09, #ffffff03);
+            transition: transform 0.25s, border-color 0.25s,
+                        background 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #60a5fa70;
+            background: linear-gradient(145deg, #1c2b49, #111a2e);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-icon {
+            width: 49px;
+            height: 49px;
+            display: grid;
+            place-items: center;
+            border-radius: 15px;
+            font-size: 23px;
+        }
+
+        .blue { background: #3b82f625; }
+        .purple { background: #8b5cf625; }
+        .green { background: #10b98120; }
+        .orange { background: #f59e0b20; }
+        .pink { background: #ec489920; }
+        .cyan { background: #06b6d420; }
+
+        .tag {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #a5b4fc;
+        }
+
+        .card h3 {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .card p {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: auto;
+            padding-top: 22px;
+            color: #93c5fd;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .card-link:hover {
+            color: white;
+        }
+
+        .empty {
+            display: none;
+            padding: 35px;
+            text-align: center;
+            color: var(--muted);
+            border: 1px dashed var(--border);
+            border-radius: 15px;
+        }
+
+        .callout {
+            margin-top: 65px;
+            padding: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 22px;
+            border-radius: 20px;
+            border: 1px solid #8b5cf640;
+            background: linear-gradient(110deg, #3b82f618, #8b5cf618);
+        }
+
+        .callout h3 {
+            font-size: 19px;
+        }
+
+        .callout p {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .callout a {
+            flex-shrink: 0;
+            padding: 11px 17px;
+            border-radius: 10px;
+            color: white;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        footer {
+            margin-top: 55px;
+            padding: 25px 0;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 800px) {
+            .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hero {
+                padding-top: 55px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                width: 92%;
+            }
+
+            nav {
+                min-height: 68px;
+            }
+
+            .nav-right {
+                gap: 10px;
+            }
+
+            .nav-right > a:first-child {
+                display: none;
+            }
+
+            .status {
+                font-size: 10px;
+                padding: 6px 9px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .callout {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .card {
+                min-height: 235px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="container">
+        <a class="brand" href="#">
+            <span class="brand-icon">☁</span>
+            <span>Cloud<span class="gradient-text">Space</span></span>
+        </a>
+
+        <div class="nav-right">
+            <a href="#resources">Resources</a>
+            <a href="#about">About</a>
+            <span class="status">● Online Portal</span>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <span class="eyebrow">✦ YOUR LEARNING SPACE</span>
+
+            <h1>
+                Learn smarter.<br>
+                Grow <span class="gradient-text">faster.</span>
+            </h1>
+
+            <p>
+                Your personal hub for programming, cloud computing
+                and technology resources. Everything you need to
+                keep learning, all in one place.
+            </p>
+
+            <label class="search-wrap">
+                <span>⌕</span>
+                <input
+                    type="search"
+                    id="search"
+                    placeholder="Search learning resources..."
+                    aria-label="Search learning resources"
+                >
+            </label>
+        </section>
+
+        <section id="resources">
+            <div class="section-heading">
+                <div>
+                    <h2>Explore resources</h2>
+                    <p>Handpicked links to help you level up.</p>
+                </div>
+                <p id="count">6 resources</p>
+            </div>
+
+            <div class="filters">
+                <button class="filter active" data-category="all">All</button>
+                <button class="filter" data-category="cloud">Cloud</button>
+                <button class="filter" data-category="programming">Programming</button>
+                <button class="filter" data-category="web">Web Development</button>
+            </div>
+
+            <div class="grid" id="grid">
+                <article class="card"
+                    data-category="cloud"
+                    data-search="cloud computing aws services deployment">
+                    <div class="card-top">
+                        <div class="card-icon blue">☁️</div>
+                        <span class="tag">Cloud</span>
+                    </div>
+                    <h3>Cloud Computing</h3>
+                    <p>Understand cloud services, infrastructure and how applications run online.</p>
+                    <a class="card-link"
+                       href="https://aws.amazon.com/what-is-cloud-computing/"
+                       target="_blank" rel="noopener noreferrer">
+                        Start learning ↗
+                    </a>
+                </article>
+
+                <article class="card"
+                    data-category="programming"
+                    data-search="python programming coding official tutorial">
+                    <div class="card-top">
+                        <div class="card-icon green">🐍</div>
+                        <span class="tag">Programming</span>
+                    </div>
+                    <h3>Python Programming</h3>
+                    <p>Learn Python fundamentals, syntax, data structures and practical coding.</p>
+                    <a class="card-link"
+                       href="https://docs.python.org/3/tutorial/"
+                       target="_blank" rel="noopener noreferrer">
+                        Start learning ↗
+                    </a>
+                </article>
+
+                <article class="card"
+                    data-category="web"
+                    data-search="html css javascript web development mdn">
+                    <div class="card-top">
+                        <div class="card-icon purple">🌐</div>
+                        <span class="tag">Web</span>
+                    </div>
+                    <h3>Web Development</h3>
+                    <p>Explore HTML, CSS and JavaScript to build modern websites.</p>
+                    <a class="card-link"
+                       href="https://developer.mozilla.org/"
+                       target="_blank" rel="noopener noreferrer">
+                        Start learning ↗
+                    </a>
+                </article>
+
+                <article class="card"
+                    data-category="programming"
+                    data-search="java programming documentation classes objects">
+                    <div class="card-top">
+                        <div class="card-icon orange">☕</div>
+                        <span class="tag">Programming</span>
+                    </div>
+                    <h3>Java Development</h3>
+                    <p>Explore Java language concepts and official developer documentation.</p>
+                    <a class="card-link"
+                       href="https://dev.java/learn/"
+                       target="_blank" rel="noopener noreferrer">
+                        Start learning ↗
+                    </a>
+                </article>
+
+                <article class="card"
+                    data-category="cloud"
+                    data-search="github pages cloud hosting deploy website">
+                    <div class="card-top">
+                        <div class="card-icon cyan">🚀</div>
+                        <span class="tag">Cloud</span>
+                    </div>
+                    <h3>Website Hosting</h3>
+                    <p>Discover how static websites can be published and accessed online.</p>
+                    <a class="card-link"
+                       href="https://pages.github.com/"
+                       target="_blank" rel="noopener noreferrer">
+                        Start learning ↗
+                    </a>
+                </article>
+
+                <article class="card"
+                    data-category="web"
+                    data-search="git github version control repositories">
+                    <div class="card-top">
+                        <div class="card-icon pink">⌘</div>
+                        <span class="tag">Developer Tools</span>
+                    </div>
+                    <h3>Git & GitHub</h3>
+                    <p>Learn version control, repositories and collaborative development.</p>
+                    <a class="card-link"
+                       href="https://docs.github.com/"
+                       target="_blank" rel="noopener noreferrer">
+                        Start learning ↗
+                    </a>
+                </article>
+            </div>
+
+            <div class="empty" id="empty">
+                No resources found. Try another search.
+            </div>
+        </section>
+
+        <section class="callout" id="about">
+            <div>
+                <h3>Your next big idea starts here.</h3>
+                <p>Keep exploring, keep building, and never stop learning.</p>
+            </div>
+            <a href="#resources">Explore resources ↑</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <span>☁ CloudSpace · Student Learning Hub</span>
+            <span>Built for learners, everywhere.</span>
+        </div>
+    </footer>
+
+    <script>
+        const search = document.getElementById("search");
+        const cards = [...document.querySelectorAll(".card")];
+        const filters = [...document.querySelectorAll(".filter")];
+        const count = document.getElementById("count");
+        const empty = document.getElementById("empty");
+
+        let activeCategory = "all";
+
+        function updateResources() {
+            const query = search.value.trim().toLowerCase();
+            let visible = 0;
+
+            cards.forEach(card => {
+                const category = card.dataset.category;
+                const searchableText =
+                    (card.dataset.search + " " + card.innerText).toLowerCase();
+
+                const categoryMatches =
+                    activeCategory === "all" || category === activeCategory;
+
+                const searchMatches = searchableText.includes(query);
+                const show = categoryMatches && searchMatches;
+
+                card.style.display = show ? "flex" : "none";
+
+                if (show) visible++;
+            });
+
+            count.textContent = `${visible} resource${visible === 1 ? "" : "s"}`;
+            empty.style.display = visible === 0 ? "block" : "none";
+        }
+
+        search.addEventListener("input", updateResources);
+
+        filters.forEach(button => {
+            button.addEventListener("click", () => {
+                filters.forEach(item => item.classList.remove("active"));
+                button.classList.add("active");
+
+                activeCategory = button.dataset.category;
+                updateResources();
+            });
+        });
+
+        updateResources();
+    </script>
+</body>
+</html>
